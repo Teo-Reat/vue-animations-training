@@ -1,7 +1,13 @@
 <template>
     <div id="app">
+        <h1>Animations</h1>
+        <hr>
+        <select v-model="alertAnimation">
+            <option value="fade">Fade</option>
+            <option value="slide">Slide</option>
+        </select>
         <button @click="show = !show">Some btn</button>
-        <transition name="fade">
+        <transition :name="alertAnimation">
             <div class="some-div" v-if="show"></div>
         </transition>
         <transition name="slide" type="animation" appear>
@@ -12,6 +18,11 @@
                 leave-active-class="animated shake">
             <div class="some-div" v-if="show"></div>
         </transition>
+        <transition :name="alertAnimation" mode="out-in">
+            <div class="some-div" v-if="show" key="info"></div>
+            <div class="some-div alert" v-else key="warning"></div>
+        </transition>
+        <hr>
     </div>
 </template>
 
@@ -19,7 +30,8 @@
     export default {
         data() {
             return {
-                show: true
+                show: false,
+                alertAnimation: 'fade'
             }
         }
     }
@@ -31,11 +43,15 @@
         color: #2c3e50;
         margin-top: 60px;
     }
-    .some-div {
+    .some-div,
+    .alert {
         width: 400px;
-        background: coral;
+        background: cornflowerblue;
         height: 40px;
         margin: 10px auto;
+    }
+    .alert {
+        background: coral;
     }
     /*animations*/
     /*fade*/
@@ -66,7 +82,7 @@
     }
     .slide-leave-active {
         animation: slide-out 1s ease-out forwards;
-        transition: opacity 3s;
+        transition: opacity 1s;
         opacity: 0;
     }
     @keyframes slide-in {
